@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export interface AvatarProps {
   /** 头像图片的 URL */
   src?: string;
@@ -11,6 +13,7 @@ export interface AvatarProps {
   onClick?: () => void;
   /** 是否显示上传提示 */
   uploadPrompt?: boolean;
+  labelClassName?: string;
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
@@ -20,6 +23,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   shape = 'circle',
   onClick,
   uploadPrompt = false,
+  labelClassName,
 }) => {
   const sizeClasses = {
     small: 'w-8 h-8 text-sm',
@@ -27,12 +31,16 @@ export const Avatar: React.FC<AvatarProps> = ({
     large: 'w-16 h-16 text-lg',
   };
 
+  const [uploadStatus, setUploadStatus] =  useState(uploadPrompt)
+
   const shapeClasses = shape === 'circle' ? 'rounded-full' : 'rounded-lg';
 
   return (
     <div
-      className={`relative flex items-center justify-center ${sizeClasses[size]} ${shapeClasses} bg-gray-200 text-gray-600 font-bold cursor-pointer hover:bg-gray-300`}
+      className={`relative flex items-center justify-center ${sizeClasses[size]} ${shapeClasses} ${labelClassName} bg-gray-200 text-gray-600 font-bold cursor-pointer hover:bg-gray-300 mx-auto my-auto`}
       onClick={onClick}
+      onMouseMove={() => setUploadStatus(true)}
+      onMouseLeave={() => setUploadStatus(false)}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
@@ -43,9 +51,9 @@ export const Avatar: React.FC<AvatarProps> = ({
           {alt.charAt(0).toUpperCase()}
         </div>
       )}
-      {uploadPrompt && !src && (
-        <div className="absolute inset-0 flex items-center justify-center text-xs text-white bg-black bg-opacity-50 rounded-lg">
-          Click to upload
+      {uploadStatus && !src && (
+        <div className="absolute inset-0 flex items-center justify-center text-xs text-center text-white bg-opacity-50 rounded-lg bg-slate-600">
+          Upload
         </div>
       )}
     </div>

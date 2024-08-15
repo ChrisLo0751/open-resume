@@ -19,13 +19,13 @@ export const ProfileForm = () => {
       <div className="grid grid-cols-6 gap-3">
         <Input
           label="Name"
-          labelClassName="col-span-4"
+          labelClassName="col-span-5"
           name="name"
           placeholder="请输入您的名称"
           value={name}
           onChange={handleProfileChange}
         />
-        <Avatar size="large" />
+        <Avatar size="large" labelClassName="col-span-1" />
         <Textarea
           label="Objective"
           labelClassName="col-span-full"
