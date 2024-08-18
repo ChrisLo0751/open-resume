@@ -4,6 +4,7 @@ import { Input, Textarea } from "components/ResumeForm/Form/InputGroup";
 import { useAppDispatch, useAppSelector } from "lib/redux/hooks";
 import { changeProfile, selectProfile } from "lib/redux/resumeSlice";
 import { ResumeProfile } from "lib/redux/types";
+import {uploadFile } from "../../../api/index";
 
 export const ProfileForm = () => {
   const profile = useAppSelector(selectProfile);
@@ -13,6 +14,13 @@ export const ProfileForm = () => {
   const handleProfileChange = (field: keyof ResumeProfile, value: string) => {
     dispatch(changeProfile({ field, value }));
   };
+
+  const onUpload = (file: File) => { 
+    console.log(file); // Log the selected file
+    uploadFile(file).then((response) => { 
+      console.log(response); // Log the API response
+    });
+  }
 
   return (
     <BaseForm>
@@ -25,7 +33,7 @@ export const ProfileForm = () => {
           value={name}
           onChange={handleProfileChange}
         />
-        <Avatar size="large" labelClassName="col-span-1" />
+        <Avatar name="avatar" label="头像" labelClassName="col-span-1" onUpload={onUpload} />
         <Textarea
           label="Objective"
           labelClassName="col-span-full"
